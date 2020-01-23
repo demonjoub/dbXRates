@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/labstack/echo"
 )
@@ -24,6 +25,20 @@ func getAllHandler(c echo.Context) error {
 	for _, f := range files {
 		fmt.Println(f.Name())
 		filesname = append(filesname, f.Name())
+	}
+
+	if len(filesname) == 0 {
+		dt := time.Now()
+		fname := root + dt.Format("20200123") + ".json"
+		var golds Golds
+		byteValue := getGoldPrice()
+		json.Unmarshal(byteValue, &golds)
+		print(golds)
+		err := ioutil.WriteFile(fname, byteValue, 0644)
+		if checkErr(err) {
+			return c.JSON(http.StatusFound, "")
+		}
+		return c.JSON(http.StatusOK, string(fname))
 	}
 	urlsJson, _ := json.Marshal(filesname)
 	return c.JSON(http.StatusOK, string(urlsJson))

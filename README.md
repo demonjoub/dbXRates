@@ -1,10 +1,13 @@
 # metals rates
 **build**
-go mod tindy
-go mod vender
-go build
+
+    go mod tindy
+    go mod vender
+    go build
+
 **run**
-./merals-rates
+
+    ./merals-rates
 
 **API**
 
